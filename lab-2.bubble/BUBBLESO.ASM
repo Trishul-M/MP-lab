@@ -1,21 +1,28 @@
-.model small
-.data
-n db 06
-a db 05,07,04,03,06,02
-.code
-mov ax,@data
-mov ds,ax
-lea si,a
-mov cl,n
-dec cl
-outloop: mov ch,cl
-mov si,00h
-inloop: mov al,a[si]
-mov a[si-1],al
-noexchange: dec ch
-jnz inloop
-dec cl
-jnz outloop
-mov ah,4ch
-int 21h
-end
+.MODEL SMALL
+.DATA
+N DB 6
+A DB 05,07,04,03,06,02
+
+.CODE
+MOV AX,@DATA
+MOV DS,AX
+LEA SI,A
+MOV CL,N
+DEC CL
+
+OUTLOOP:MOV CH,CL
+MOV SI,00H
+INLOOP:MOV AL,A[SI]
+INC SI
+
+CMP AL,A[SI]
+JC NOEXCHANGE
+XCHG AL,A[SI]
+MOV A[SI-1],AL
+NOEXCHANGE: DEC CH
+JNZ INLOOP
+DEC CL
+JNZ OUTLOOP
+MOV AH,4CH
+INT 21H
+END 
